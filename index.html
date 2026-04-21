@@ -27,6 +27,15 @@
       background: #0a1628 url('./bg-current.png') center center / cover no-repeat;
     }
 
+    /* blurred bg layer */
+    .frame .bg-blur {
+      position: absolute; inset: 0;
+      background: url('./bg-current.png') center center / cover no-repeat;
+      filter: blur(14px) brightness(0.65);
+      transform: scale(1.05);
+      z-index: 0;
+    }
+
     /* dark gradient overlay on photo */
     .frame::before {
       content: "";
@@ -36,47 +45,6 @@
         rgba(0,0,0,0.1) 40%,
         rgba(0,0,0,0.55) 100%);
       z-index: 0;
-    }
-
-    /* ── TOP OVERLAY — name left, links right ── */
-    .top-overlay {
-      position: absolute;
-      top: clamp(16px, 2.5vh, 28px);
-      left: clamp(20px, 2.5vw, 36px);
-      right: clamp(20px, 2.5vw, 36px);
-      z-index: 10;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .top-name {
-      font-size: clamp(11px, 0.9vw, 13px);
-      font-weight: 400;
-      letter-spacing: 0.08em;
-      color: rgba(255,255,255,0.7);
-    }
-
-    .top-links {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-    }
-
-    .top-links a {
-      font-size: 10px;
-      font-weight: 400;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.38);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-    .top-links a:hover { color: #fff; }
-
-    .top-links .sep {
-      width: 1px; height: 12px;
-      background: rgba(255,255,255,0.2);
     }
 
     /* ── PERMANENT SIDE PANEL — overlaid on photo right side ── */
@@ -183,30 +151,21 @@
       z-index: 6;
     }
     .photo-name h1 {
-      font-size: clamp(44px, 8vw, 110px);
+      font-size: clamp(32px, 5.5vw, 72px);
       font-weight: 900;
-      line-height: 0.88;
-      letter-spacing: -0.025em;
+      line-height: 1.0;
+      letter-spacing: -0.02em;
       text-shadow: 0 4px 32px rgba(0,0,0,0.5);
     }
   </style>
 </head>
 <body>
   <div class="frame">
-
-    <!-- TOP: name left + Impressum / Let's get in Touch right -->
-    <div class="top-overlay">
-      <span class="top-name">Dominika Anna Dabrowski, MD</span>
-      <div class="top-links">
-        <a href="#">Impressum</a>
-        <div class="sep"></div>
-        <a href="mailto:dominika.anna.dabrowski@gmail.com">Let´s get in Touch</a>
-      </div>
-    </div>
+    <div class="bg-blur"></div>
 
     <!-- NAME bottom left -->
     <div class="photo-name">
-      <h1>Dominika</h1>
+      <h1>Dominika<br>Anna Dabrowski, MD</h1>
     </div>
 
     <!-- PERMANENT PANEL -->
