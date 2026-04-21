@@ -3,319 +3,307 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dominika Anna Dabrowski, MD</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&display=swap" rel="stylesheet">
+  <title>Dominika Anna Dabrowski, MD | Anatomical Pathologist</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg-image: url("./bg-current.png");
+      --text: #ffffff;
+      --muted: #e6ecf8;
+      --line: rgba(255, 255, 255, 0.72);
+      --chip: rgba(11, 18, 30, 0.6);
+      --chip-border: rgba(255, 255, 255, 0.2);
+      --card: rgba(16, 24, 38, 0.58);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     html, body {
       width: 100%; height: 100%;
       overflow: hidden;
-      background: #000;
       font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
-    }
-
-    /* BACKGROUND */
-    .bg {
-      position: fixed;
-      inset: 0;
-      background: url('./bg-current.png') center center / cover no-repeat;
-      transition: filter 0.7s ease;
-      z-index: 0;
-    }
-    .bg.dimmed { filter: brightness(0.3); }
-
-    /* NAME — bottom left */
-    .name-block {
-      position: fixed;
-      bottom: clamp(36px, 6vw, 72px);
-      left: clamp(36px, 6vw, 72px);
-      z-index: 10;
-      transition: opacity 0.5s ease;
-    }
-    .name-block h1 {
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: clamp(56px, 9.5vw, 130px);
       font-weight: 300;
-      color: #fff;
-      line-height: 0.88;
-      letter-spacing: -0.025em;
-      text-shadow: 0 2px 40px rgba(0,0,0,0.35);
-    }
-    .name-block h1 b { font-weight: 600; }
-    .name-block p {
-      font-size: clamp(11px, 0.9vw, 14px);
-      font-weight: 300;
-      color: rgba(255,255,255,0.65);
-      letter-spacing: 0.28em;
-      text-transform: uppercase;
-      margin-top: 10px;
+      color: var(--text);
     }
 
-    /* BURGER */
-    .burger {
-      position: fixed;
-      top: clamp(28px, 4vw, 52px);
-      right: clamp(28px, 4vw, 52px);
-      z-index: 300;
-      width: 36px; height: 36px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      gap: 7px;
-      cursor: pointer;
+    .hero {
+      position: relative;
+      width: 100vw; height: 100dvh;
+      isolation: isolate;
+      background: #0a1628 var(--bg-image) center center / cover no-repeat;
     }
-    .burger span {
-      display: block;
-      width: 100%; height: 1.5px;
-      background: #fff;
-      border-radius: 1px;
-      transition: all 0.4s cubic-bezier(0.77,0,0.175,1);
-      transform-origin: center;
+
+    .hero::before {
+      content: "";
+      position: absolute; inset: 0;
+      background: #0a1628 var(--bg-image) center center / cover no-repeat;
+      filter: blur(14px) brightness(0.7);
+      transform: scale(1.05);
+      z-index: -2;
     }
-    .burger.active span:nth-child(1) { transform: translateY(8.5px) rotate(45deg); }
-    .burger.active span:nth-child(2) { opacity: 0; transform: scaleX(0); }
-    .burger.active span:nth-child(3) { transform: translateY(-8.5px) rotate(-45deg); }
 
-    /* PANEL */
-    .panel {
-      position: fixed;
-      top: 0; right: 0;
-      width: min(400px, 100vw);
-      height: 100%;
-      z-index: 200;
-      display: flex;
-      flex-direction: column;
-      padding: clamp(90px, 12vh, 130px) clamp(36px, 5vw, 60px) clamp(40px, 6vh, 60px);
-      transform: translateX(100%);
-      transition: transform 0.6s cubic-bezier(0.77,0,0.175,1);
-      overflow-y: auto;
+    .hero::after {
+      content: "";
+      position: absolute; inset: 0;
+      background: linear-gradient(90deg,
+        rgba(8,18,40,0.92) 0%,
+        rgba(8,18,40,0.3) 14%,
+        rgba(8,18,40,0) 26%,
+        rgba(8,18,40,0) 74%,
+        rgba(8,18,40,0.3) 86%,
+        rgba(8,18,40,0.92) 100%);
+      z-index: -1;
     }
-    .panel.open { transform: translateX(0); }
 
-    /* NAV */
-    nav { display: flex; flex-direction: column; }
-
-    .nav-item { border-bottom: 1px solid rgba(255,255,255,0.12); }
-
-    .nav-btn {
-      width: 100%;
-      background: none; border: none;
-      color: rgba(255,255,255,0.45);
-      font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
-      font-size: 11px;
-      font-weight: 400;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      text-align: left;
-      padding: 17px 0;
-      cursor: pointer;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      transition: color 0.2s ease;
-    }
-    .nav-btn:hover, .nav-btn.active { color: #fff; }
-
-    .nav-btn .arr {
-      font-size: 14px;
-      font-weight: 200;
-      transition: transform 0.3s ease;
-      opacity: 0.4;
-    }
-    .nav-btn.active .arr { transform: rotate(90deg); opacity: 1; }
-
-    /* SECTION CONTENT */
-    .sec {
-      max-height: 0;
+    .frame {
+      position: absolute;
+      inset: clamp(48px, 8vw, 120px);
+      border: 2px solid var(--line);
+      border-radius: 14px;
+      background: #0d1a35 var(--bg-image) center center / cover no-repeat;
       overflow: hidden;
-      opacity: 0;
-      transition: max-height 0.5s cubic-bezier(0.4,0,0.2,1), opacity 0.4s ease, padding 0.4s ease;
-    }
-    .sec.open { max-height: 600px; opacity: 1; padding-bottom: 18px; }
-
-    .sec p, .sec ul {
-      font-size: 12px;
-      font-weight: 300;
-      color: rgba(255,255,255,0.75);
-      line-height: 1.8;
-    }
-    .sec ul { list-style: none; }
-    .sec ul li { padding: 2px 0; padding-left: 16px; position: relative; }
-    .sec ul li::before {
-      content: '—';
-      position: absolute; left: 0;
-      opacity: 0.35;
-      font-size: 10px;
-    }
-    .sec b { font-weight: 500; color: rgba(255,255,255,0.95); }
-
-    /* CONTACT */
-    .contact {
-      margin-top: auto;
-      padding-top: 28px;
-      border-top: 1px solid rgba(255,255,255,0.12);
       display: flex;
-      flex-direction: column;
-      gap: 5px;
+      align-items: flex-end;
+      padding: clamp(12px, 1.8vw, 24px);
     }
-    .contact span, .contact a {
-      font-size: 11px;
+
+    .frame::before {
+      content: "";
+      position: absolute; inset: 0;
+      background: linear-gradient(to top,
+        rgba(0,0,0,0.82) 0%,
+        rgba(0,0,0,0.3) 48%,
+        rgba(0,0,0,0.05) 100%);
+      pointer-events: none;
+    }
+
+    .content {
+      position: relative;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1.1fr 2fr;
+      gap: 16px;
+      align-items: end;
+    }
+
+    .name {
+      font-size: clamp(38px, 7vw, 92px);
+      line-height: 0.95;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      margin-bottom: 5px;
+      text-shadow: 0 8px 24px rgba(0,0,0,0.5);
+    }
+
+    .headline {
+      font-size: clamp(15px, 1.9vw, 28px);
       font-weight: 300;
-      color: rgba(255,255,255,0.4);
-      text-decoration: none;
-      letter-spacing: 0.04em;
-      transition: color 0.2s;
+      color: #f0f4ff;
+      margin-bottom: 4px;
     }
-    .contact a:hover { color: #fff; }
-    .cta {
-      margin-top: 14px;
-      align-self: flex-start;
-      padding: 9px 22px;
-      border: 1px solid rgba(255,255,255,0.35);
+
+    .subheadline {
+      font-size: clamp(11px, 0.9vw, 13px);
+      color: #99b0d8;
+      margin-bottom: 10px;
+      line-height: 1.4;
+    }
+
+    .bio {
+      color: var(--muted);
+      font-size: clamp(11px, 0.88vw, 13px);
+      line-height: 1.55;
+      margin-bottom: 12px;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+
+    .chip {
+      list-style: none;
+      padding: 5px 11px;
       border-radius: 999px;
-      color: rgba(255,255,255,0.8) !important;
-      font-size: 11px !important;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      transition: all 0.25s !important;
+      font-size: 11px;
+      background: var(--chip);
+      border: 1px solid var(--chip-border);
+      backdrop-filter: blur(3px);
     }
-    .cta:hover { background: #fff; color: #000 !important; border-color: #fff; }
+
+    .cv-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 7px;
+    }
+
+    .cv-card {
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 10px;
+      padding: 8px 9px;
+      backdrop-filter: blur(4px);
+    }
+
+    .cv-card.wide { grid-column: span 2; }
+
+    .cv-title {
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      color: #7fa8e0;
+      margin-bottom: 4px;
+      font-weight: 500;
+    }
+
+    .cv-text {
+      font-size: 10px;
+      line-height: 1.45;
+      color: #dce8ff;
+    }
+
+    .cv-text b { font-weight: 600; }
+
+    .bottom-bar {
+      margin-top: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      font-size: 11px;
+      color: #99b0d8;
+    }
+
+    .cta {
+      text-decoration: none;
+      border-radius: 999px;
+      padding: 10px 18px;
+      background: #ffffff;
+      color: #0a1628;
+      border: 1px solid rgba(255,255,255,0.65);
+      font-size: 13px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    @media (max-width: 1020px) {
+      .content { grid-template-columns: 1fr; }
+      .cv-grid { grid-template-columns: repeat(2, 1fr); }
+      html, body { overflow: auto; }
+      .frame { align-items: flex-start; padding-top: 24px; }
+    }
   </style>
 </head>
 <body>
+  <main class="hero">
+    <section class="frame" aria-label="Dominika Dabrowski — contact page">
+      <div class="content">
 
-  <div class="bg" id="bg"></div>
-
-  <div class="name-block">
-    <h1><b>Dominika</b><br>Anna Dabrowski</h1>
-    <p>Consultant Anatomical Pathologist · MD</p>
-  </div>
-
-  <div class="burger" id="burger" onclick="togglePanel()">
-    <span></span><span></span><span></span>
-  </div>
-
-  <div class="panel" id="panel">
-    <nav>
-
-      <div class="nav-item">
-        <button class="nav-btn" onclick="toggle('pos')">Current Position <span class="arr">›</span></button>
-        <div class="sec" id="pos">
-          <p><b>Consultant Anatomical Pathologist</b><br>Klinik Ottakring, Vienna · 2025–present<br><br>
-          Independent diagnostic reporting in surgical pathology & cytopathology. Macroscopic examination, frozen sections, intraoperative cytology. Routine IHC with molecular integration. Active in thyroid, urology & lung MDTs. Digital pathology implementation & accreditation. Teaching of pathology trainees.</p>
-        </div>
-      </div>
-
-      <div class="nav-item">
-        <button class="nav-btn" onclick="toggle('train')">Specialist Training <span class="arr">›</span></button>
-        <div class="sec" id="train">
-          <ul>
-            <li><b>2020–2022</b> Salzkammergut Regional Hospital, Vöcklabruck</li>
-            <li><b>2023</b> Focus: solid neoplasms pathology</li>
-            <li><b>2024</b> Klinik Ottakring — non-neoplastic diseases</li>
-            <li><b>2025</b> Advanced cytopathology & clinical microbiology</li>
-            <li>National specialist exam passed <b>2023</b></li>
-            <li>Full consultant certification <b>2025</b></li>
+        <div>
+          <h1 class="name">Dominika</h1>
+          <h2 class="headline">Anatomical Pathologist</h2>
+          <p class="subheadline">Klinik Ottakring, Vienna · Board-certified Austria & EU</p>
+          <p class="bio">
+            Board-certified Consultant Anatomical Pathologist with broad experience in surgical pathology
+            and cytopathology at a major public tertiary referral centre in Vienna. Particular expertise in
+            uropathology, thyroid & endocrine pathology, and pulmonary pathology. Open to international
+            consultant-level opportunities from <b>01.01.2027</b>.
+          </p>
+          <ul class="chips">
+            <li class="chip">Frozen sections</li>
+            <li class="chip">Intraoperative cytology</li>
+            <li class="chip">Tumor boards (MDT)</li>
+            <li class="chip">Immunohistochemistry</li>
+            <li class="chip">Molecular integration</li>
+            <li class="chip">Digital pathology</li>
+            <li class="chip">Autopsy pathology</li>
           </ul>
         </div>
-      </div>
 
-      <div class="nav-item">
-        <button class="nav-btn" onclick="toggle('edu')">Education <span class="arr">›</span></button>
-        <div class="sec" id="edu">
-          <ul>
-            <li><b>MD</b> — Medical University of Łódź, Poland (2011–2017)</li>
-            <li>Full medical licence, Austria</li>
-            <li>EU Consultant Pathologist</li>
-            <li>Postgrad internship — Nicolaus Copernicus, Łódź (2018)</li>
-            <li>Postgrad internship — Sisters of Mercy, Ried im Innkreis (2019)</li>
-          </ul>
+        <div>
+          <div class="cv-grid">
+
+            <article class="cv-card wide">
+              <h3 class="cv-title">Current Position</h3>
+              <p class="cv-text">
+                <b>Consultant Anatomical Pathologist</b> — Klinik Ottakring, Vienna (2025–present)<br>
+                Independent diagnostic reporting in surgical pathology & cytopathology. Frozen sections, intraoperative cytology, IHC & molecular integration. Active in thyroid, urology & lung MDTs. Digital pathology implementation. Teaching of pathology trainees.
+              </p>
+            </article>
+
+            <article class="cv-card wide">
+              <h3 class="cv-title">Specialist Training (2020–2025)</h3>
+              <p class="cv-text">
+                <b>Salzkammergut Regional Hospital</b>, Vöcklabruck (2020–2022) — core training ·
+                <b>Solid neoplasms focus</b> (2023) · <b>Klinik Ottakring</b> (2024) — non-neoplastic diseases ·
+                <b>Advanced cytopathology & microbiology</b> (2025)<br>
+                Specialist exam passed 2023 · Full consultant certification 2025
+              </p>
+            </article>
+
+            <article class="cv-card">
+              <h3 class="cv-title">Education</h3>
+              <p class="cv-text">
+                <b>MD</b> — Medical University of Łódź (2011–2017)<br>
+                Full medical licence, Austria<br>
+                EU Consultant Pathologist
+              </p>
+            </article>
+
+            <article class="cv-card">
+              <h3 class="cv-title">Subspecialty Focus</h3>
+              <p class="cv-text">
+                Uropathology · Thyroid & endocrine<br>
+                Pulmonary & GI pathology<br>
+                Intraoperative cytology<br>
+                Interstitial lung disease (in training)
+              </p>
+            </article>
+
+            <article class="cv-card">
+              <h3 class="cv-title">Academic & Society Work</h3>
+              <p class="cv-text">
+                <b>Board Member</b> — ÖGZ (Austrian Society of Cytology)<br>
+                Bilingual DE/EN digital cytology atlas (May 2026)<br>
+                National cytology course speaker
+              </p>
+            </article>
+
+            <article class="cv-card">
+              <h3 class="cv-title">Memberships & Languages</h3>
+              <p class="cv-text">
+                ÖGZ · ÖGPath · ESP · IAP<br><br>
+                Polish (native) · German (clinical)<br>
+                English (proficient, OET 2026)
+              </p>
+            </article>
+
+            <article class="cv-card wide">
+              <h3 class="cv-title">US Licensure Pathway</h3>
+              <p class="cv-text">
+                USMLE Step 1 & Step 2 CK — Q2/Q3 2026 ·
+                OET Medicine — Q3 2026 ·
+                ECFMG Certification (Pathway 1) — late 2026 ·
+                Eligible: <b>NC ITPE License / FL SB 7016</b> ·
+                Work-ready: <b>01.01.2027</b>
+              </p>
+            </article>
+
+          </div>
+
+          <div class="bottom-bar">
+            <div>
+              <span style="margin-right:14px">Vienna, Austria</span>
+              <span>dominika.anna.dabrowski@gmail.com</span>
+            </div>
+            <a class="cta" href="tel:+4368184146950">Call me: +43 681 841 46 950</a>
+          </div>
         </div>
+
       </div>
-
-      <div class="nav-item">
-        <button class="nav-btn" onclick="toggle('sub')">Subspecialty Focus <span class="arr">›</span></button>
-        <div class="sec" id="sub">
-          <ul>
-            <li>Uropathology</li>
-            <li>Thyroid & endocrine pathology</li>
-            <li>Pulmonary & GI pathology</li>
-            <li>Intraoperative cytology</li>
-            <li>Interstitial lung disease (in training)</li>
-            <li>Autopsy pathology</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="nav-item">
-        <button class="nav-btn" onclick="toggle('acad')">Academic Work <span class="arr">›</span></button>
-        <div class="sec" id="acad">
-          <ul>
-            <li><b>Board Member</b> — Austrian Society of Cytology (ÖGZ)</li>
-            <li>Bilingual DE/EN digital cytology atlas — May 2026</li>
-            <li>National cytology course speaker & organiser</li>
-            <li>Peer learning & trainee supervision</li>
-            <li>CPD — national & international societies</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="nav-item">
-        <button class="nav-btn" onclick="toggle('memb')">Memberships <span class="arr">›</span></button>
-        <div class="sec" id="memb">
-          <ul>
-            <li>ÖGZ — Austrian Society of Cytology <b>(Board Member)</b></li>
-            <li>ÖGPath — Austrian Society of Pathology</li>
-            <li>ESP — European Society of Pathology</li>
-            <li>IAP — International Academy of Pathology</li>
-          </ul>
-          <p style="margin-top:10px">Polish (native) · German (clinical) · English (proficient, OET 2026)</p>
-        </div>
-      </div>
-
-      <div class="nav-item">
-        <button class="nav-btn" onclick="toggle('us')">US Licensure <span class="arr">›</span></button>
-        <div class="sec" id="us">
-          <ul>
-            <li>USMLE Step 1 & Step 2 CK — Q2/Q3 2026</li>
-            <li>OET Medicine — Q3 2026</li>
-            <li>ECFMG Certification (Pathway 1) — late 2026</li>
-            <li>Eligible: <b>NC ITPE License / FL SB 7016</b></li>
-            <li>Work-ready: <b>01.01.2027</b></li>
-          </ul>
-        </div>
-      </div>
-
-    </nav>
-
-    <div class="contact">
-      <span>Vienna, Austria</span>
-      <a href="mailto:dominika.anna.dabrowski@gmail.com">dominika.anna.dabrowski@gmail.com</a>
-      <a href="tel:+4368184146950" class="cta">+43 681 841 46 950</a>
-    </div>
-  </div>
-
-  <script>
-    function togglePanel() {
-      const open = document.getElementById('panel').classList.toggle('open');
-      document.getElementById('burger').classList.toggle('active');
-      document.getElementById('bg').classList.toggle('dimmed');
-      if (!open) {
-        document.querySelectorAll('.sec').forEach(e => e.classList.remove('open'));
-        document.querySelectorAll('.nav-btn').forEach(e => e.classList.remove('active'));
-      }
-    }
-
-    function toggle(id) {
-      const sec = document.getElementById(id);
-      const btn = sec.previousElementSibling;
-      const wasOpen = sec.classList.contains('open');
-      document.querySelectorAll('.sec').forEach(e => e.classList.remove('open'));
-      document.querySelectorAll('.nav-btn').forEach(e => e.classList.remove('active'));
-      if (!wasOpen) { sec.classList.add('open'); btn.classList.add('active'); }
-    }
-  </script>
+    </section>
+  </main>
 </body>
 </html>
