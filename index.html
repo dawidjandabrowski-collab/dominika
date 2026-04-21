@@ -33,9 +33,8 @@
     /* FRAME — sharp photo inside, overflow hidden clips to rounded corners */
     .frame {
       position: absolute;
-      top: 2%; bottom: 2%;
-      left: clamp(40px, 6vw, 100px);
-      right: clamp(40px, 6vw, 100px);
+      top: 15%; bottom: 15%;
+      left: 15%; right: 15%;
       border: 2px solid rgba(255,255,255,0.55);
       border-radius: 14px;
       overflow: hidden;
@@ -70,7 +69,14 @@
       text-shadow: 0 4px 24px rgba(0,0,0,0.6);
     }
 
-    /* PERMANENT SIDE PANEL */
+    .photo-name p.photo-subtitle {
+      font-size: clamp(12px, 1vw, 16px);
+      font-weight: 300;
+      color: rgba(255,255,255,0.75);
+      letter-spacing: 0.06em;
+      margin-top: 4px;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.5);
+    }
     .panel {
       position: absolute;
       top: 0; right: 0; bottom: 0;
@@ -169,7 +175,8 @@
     <div class="frame">
 
       <div class="photo-name">
-        <h1>Dominika<br>Anna Dabrowski, MD</h1>
+        <h1>Dominika<br>Dabrowski, MD</h1>
+      <p class="photo-subtitle">Anatomical Pathologist</p>
       </div>
 
       <div class="panel">
